@@ -54,13 +54,8 @@ exports.login = async (req, res) => {
 
     const token = generateToken(interviewer._id, "interviewer");
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      // sameSite: "strict",
-      sameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+    // ✅ Use the shared cookie options from app.locals
+    res.cookie("interviewertoken", token, req.app.locals.cookieOptions);
 
     res.status(200).json({
       message: "Interviewer login successful",
@@ -84,11 +79,8 @@ exports.login = async (req, res) => {
 // ----------------- LOGOUT -----------------
 exports.logout = async (req, res) => {
   try {
-    res.clearCookie("token", {
-      httpOnly: true,
-       secure: true,
-      sameSite: "strict",
-    });
+    // ✅ Use the shared cookie options for consistency
+    res.clearCookie("interviewertoken", req.app.locals.cookieOptions);
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
     console.error("Logout Error:", error);
@@ -113,11 +105,9 @@ exports.deleteAccount = async (req, res) => {
 
     await Interviewer.findByIdAndDelete(user._id);
 
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "strict",
-    });
+    // ✅ Use the shared cookie options for consistency
+
+    res.clearCookie("interviewertoken", req.app.locals.cookieOptions);
 
     res.status(200).json({ message: "Account deleted successfully" });
   } catch (error) {
@@ -129,7 +119,7 @@ exports.deleteAccount = async (req, res) => {
 // ----------------- VERIFY AUTH -----------------
 exports.verifyAuth = async (req, res) => {
   try {
-    const token = req.cookies.token;
+    const token = req.cookies.interviewertoken;
     if (!token) return res.json({ loggedIn: false });
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

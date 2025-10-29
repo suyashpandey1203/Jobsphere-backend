@@ -1,36 +1,18 @@
-const jwt = require("jsonwebtoken");
-const { Candidate, Interviewer } = require("../models/User");
+const express = require('express');
+const router = express.Router();
+const assessmentController = require('../controllers/AssessmentController');
+const { protectInterviewer } = require('../middlewares/authMiddleware');
 
-// Middleware for Candidate
-exports.protectCandidate = async (req, res, next) => {
-  try {
-    const token = req.cookies.token;
-    if (!token) return res.status(401).json({ message: "Not authorized, no token" });
+// Specific routes first 👇
+router.get('/latest', protectInterviewer,assessmentController.getLatestAssessments);
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await Candidate.findById(decoded.id).select("-password");
-    if (!req.user) return res.status(401).json({ message: "Candidate not found" });
+router.get("/my-assessments", protectInterviewer,  assessmentController.getMyAssessments);
 
-    next();
-  } catch (error) {
-    console.error(error);
-    res.status(401).json({ message: "Not authorized, token failed" });
-  }
-};
+router.post('/', protectInterviewer, assessmentController.createAssessment);
 
-// Middleware for Interviewer
-exports.protectInterviewer = async (req, res, next) => {
-  try {
-    const token = req.cookies.token;
-    if (!token) return res.status(401).json({ message: "Not authorized, no token" });
+// Dynamic routes later 👇
+router.get('/:id', protectInterviewer, assessmentController.getAssessmentDetails);
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await Interviewer.findById(decoded.id).select("-password");
-    if (!req.user) return res.status(401).json({ message: "Interviewer not found" });
+router.post('/:id/invite', protectInterviewer,assessmentController.inviteParticipant);
 
-    next();
-  } catch (error) {
-    console.error(error);
-    res.status(401).json({ message: "Not authorized, token failed" });
-  }
-};
+module.exports = router;
