@@ -1,18 +1,36 @@
-const express = require('express');
-const router = express.Router();
-const assessmentController = require('../controllers/AssessmentController');
-const { protectInterviewer } = require('../middlewares/authMiddleware');
+const jwt = require("jsonwebtoken");
+const { Candidate, Interviewer } = require("../models/User");
 
-// Specific routes first 👇
-router.get('/latest', protectInterviewer,assessmentController.getLatestAssessments);
+// Middleware for Candidate
+exports.protectCandidate = async (req, res, next) => {
+  try {
+    const token = req.cookies.candidatetoken;
+    if (!token) return res.status(401).json({ message: "Not authorized, no token" });
 
-router.get("/my-assessments", protectInterviewer,  assessmentController.getMyAssessments);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await Candidate.findById(decoded.id).select("-password");
+    if (!req.user) return res.status(401).json({ message: "Candidate not found" });
 
-router.post('/', protectInterviewer, assessmentController.createAssessment);
+    next();
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ message: "Not authorized, token failed" });
+  }
+};
 
-// Dynamic routes later 👇
-router.get('/:id', protectInterviewer, assessmentController.getAssessmentDetails);
+// Middleware for Interviewer
+exports.protectInterviewer = async (req, res, next) => {
+  try {
+    const token = req.cookies.interviewertoken;
+    if (!token) return res.status(401).json({ message: "Not authorized, no token" });
 
-router.post('/:id/invite', protectInterviewer,assessmentController.inviteParticipant);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await Interviewer.findById(decoded.id).select("-password");
+    if (!req.user) return res.status(401).json({ message: "Interviewer not found" });
 
-module.exports = router;
+    next();
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ message: "Not authorized, token failed" });
+  }
+};
