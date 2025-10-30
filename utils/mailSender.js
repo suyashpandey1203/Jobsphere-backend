@@ -18,7 +18,7 @@ const mailSender = async (email, title, body) => {
       html: body,
     });
 
-    console.log("Email sent:", info);  // Log success response from nodemailer
+    // console.log("Email sent:", info);  // Log success response from nodemailer
     return info;
   } catch (error) {
     console.error("Error occurred while sending email:", error);

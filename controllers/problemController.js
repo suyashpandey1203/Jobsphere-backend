@@ -50,7 +50,7 @@ const fetchAtCoderProblem = async (req, res) => {
             return res.status(502).json({ message: "Could not fetch problem content" });
         }
 
-        console.log(problem);
+        // console.log(problem);
         res.json(problem);
 
     } catch (err) {

@@ -65,7 +65,7 @@ exports.login = async (req, res) => {
 exports.logout = async (req, res) => {
   try {
     // ✅ Use the shared cookie options for consistency
-    console.log(req);
+    // console.log(req);
     res.clearCookie("candidatetoken", req.app.locals.cookieOptions);
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
@@ -125,7 +125,7 @@ exports.verifyAuth = async (req, res) => {
 exports.getMyAssessments = async (req, res) => {
   try {
     const candidateId = req.user._id;
-    console.log(candidateId);
+    // console.log(candidateId);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 

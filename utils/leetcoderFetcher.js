@@ -29,7 +29,7 @@ function getTitleSlug(url) { // url : https://leetcode.com/problems/two-sum/
 
 // Main function
 async function getProblemFromLink(userLink) {
-  console.log("Fetching problem for link:", userLink);
+  // console.log("Fetching problem for link:", userLink);
   const titleSlug = getTitleSlug(userLink);
   const variables = { titleSlug };
 

@@ -41,7 +41,7 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email)
+    // console.log(email)
     const interviewer = await Interviewer.findOne({ email });
     if (!interviewer) {
       return res.status(400).json({ message: "Invalid email or password" });

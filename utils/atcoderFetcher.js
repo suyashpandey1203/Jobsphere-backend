@@ -5,17 +5,17 @@ const PCR = require('puppeteer-chromium-resolver'); // Import the new package
 puppeteer.use(StealthPlugin());
 
 const fetchAtCoderProblem = async (url) => {
-    console.log("Attempting to fetch from AtCoder:", url);
+    // console.log("Attempting to fetch from AtCoder:", url);
 
     let browser;
     try {
         // --- THIS IS THE NEW RELIABLE METHOD ---
         // 1. Run the resolver. It will download a compatible version of Chromium
         //    if it doesn't exist, and then return its location.
-        console.log("Running Puppeteer-Chromium-Resolver to get browser stats...");
+        // console.log("Running Puppeteer-Chromium-Resolver to get browser stats...");
         const stats = await PCR();
 
-        console.log(`Resolver found browser: Revision=${stats.revision}, Path=${stats.executablePath}`);
+        // console.log(`Resolver found browser: Revision=${stats.revision}, Path=${stats.executablePath}`);
 
         // 2. Launch Puppeteer using the GUARANTEED path from the resolver.
         browser = await puppeteer.launch({
@@ -64,7 +64,7 @@ const fetchAtCoderProblem = async (url) => {
         if (!problem.title || !problem.statement) {
             throw new Error("Could not parse problem title or statement from the page.");
         }
-        console.log("Successfully parsed problem:", problem.title);
+        // console.log("Successfully parsed problem:", problem.title);
         return problem;
 
     } catch (err) {

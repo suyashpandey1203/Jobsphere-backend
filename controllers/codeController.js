@@ -63,7 +63,7 @@ const runCodeByLanguage = (code, language, input) => {
 
 // Controller
 exports.runCode = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const { code, language, input } = req.body;
 
   if (!code || !language) {
@@ -72,7 +72,7 @@ exports.runCode = async (req, res) => {
 
   try {
     const result = await runCodeByLanguage(code, language, input);
-    console.log(result)
+    // console.log(result)
     res.json({
       success: !result.error && !result.stderr, // true if no runtime/compile error
       stdout: result.stdout,

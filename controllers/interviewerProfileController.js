@@ -58,7 +58,7 @@ exports.uploadFiles = async (req, res) => {
         resource_type: "raw",
       });
       user.document_url = uploadRes.secure_url; // same property for frontend
-      console.log("upload: ",uploadRes, " ",user.document_url)
+      // console.log("upload: ",uploadRes, " ",user.document_url)
       uploadedFiles.document = uploadRes.secure_url;
       fs.unlinkSync(companyProofFile.path);
     }

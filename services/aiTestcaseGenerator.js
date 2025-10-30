@@ -52,7 +52,7 @@ async function generateTestCases(title, content, sampleCases) {
     Generate the JSON array of test cases now. Do not include any explanation or markdown wrappers.
   `;
 
-  console.log("🤖 Sending request to Gemini to generate test cases...");
+  // console.log("🤖 Sending request to Gemini to generate test cases...");
 
   try {
     // Line 39: Send the prompt to the model and wait for the result.
@@ -66,7 +66,7 @@ async function generateTestCases(title, content, sampleCases) {
     // Line 47: Parse the cleaned text string into a JavaScript array of objects.
     const testCasesArray = JSON.parse(cleanedText);
 
-    console.log("✅ Successfully generated test cases!");
+    // console.log("✅ Successfully generated test cases!");
    
     // Line 52: Instead of logging, we RETURN the array so other parts of your app can use it.
     return testCasesArray;

@@ -10,7 +10,7 @@ const { fetchAtCoderProblem } = require("../utils/atcoderFetcher");
 const addQuestionWithLink = async (req, res) => {
   try {
     const { link, assessmentId } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     
     const interviewerId = req.user?._id; // optional if authentication added later
   
@@ -33,14 +33,14 @@ const addQuestionWithLink = async (req, res) => {
         .json({ message: "Problem not found or invalid link" });
 
     const q = result.data.question;
-    console.log("question", q);
+    // console.log("question", q);
     // --- Step 4: Generate Test Cases (Visible + Hidden) ---
     const generatedCases = await generateTestCases(
       q.title,
       q.content,
       q.exampleTestcases
     );
-    console.log(generatedCases);
+    // console.log(generatedCases);
     const runTestCases = generatedCases.slice(0,3);
     const hiddenTestCases = generatedCases.slice(3);
     // --- Step 5: Create Question in DB ---
@@ -112,7 +112,7 @@ const getQuestionById = async (req, res) => {
       return res.status(404).json({ success: false, message: "Question not found" });
     }
 
-    console.log("q:", question)
+    // console.log("q:", question)
     // Return success response
     res.status(200).json({
       success: true,
@@ -170,7 +170,7 @@ const runCandidateCode = async (req, res) => {
 const addQuestionWithLinkUseAtcoder = async (req, res) => {
   try {
     const { link, assessmentId } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     
     const interviewerId = req.user?._id; // optional if authentication added later
   
@@ -185,7 +185,7 @@ const addQuestionWithLinkUseAtcoder = async (req, res) => {
     if (!assessment)
       return res.status(404).json({ message: "Assessment not found" });
     
-    console.log("go")
+    // console.log("go")
     // --- Step 3: Fetch Problem Data from LeetCode ---
     const problem = await fetchAtCoderProblem(link);
     if (!problem)
@@ -194,7 +194,7 @@ const addQuestionWithLinkUseAtcoder = async (req, res) => {
         .json({ message: "Problem not found or invalid link" });
 
     // const q = result.data.question;
-    console.log("question", problem);
+    // console.log("question", problem);
     // --- Step 4: Generate Test Cases (Visible + Hidden) ---
     const generatedCases = await generateTestCases(
       problem.title,

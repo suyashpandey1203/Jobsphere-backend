@@ -142,7 +142,7 @@ exports.inviteParticipant = async (req, res) => {
         }
 
         const assessment = await Assessment.findById(assessmentId);
-        console.log(assessment)
+        // console.log(assessment)
 
         if (!assessment) {
             return res.status(404).json({ message: 'Assessment not found' });
